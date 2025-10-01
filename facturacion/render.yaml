@@ -1,9 +1,2 @@
-services:
-  - type: web
-    name: sistema-facturacion
-    env: native
-    buildCommand: cd Backend && dotnet restore && dotnet build -c Release
-    startCommand: cd Backend && dotnet run --urls http://0.0.0.0:$PORT -c Release
-    envVars:
-      - key: ASPNETCORE_ENVIRONMENT
-        value: Production
+# Render configuration for .NET application
+# Use manual configuration in Render dashboard instead

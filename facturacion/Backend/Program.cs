@@ -33,7 +33,8 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend", policy =>
     {
         policy.WithOrigins("http://localhost:3000", "http://127.0.0.1:5500", "http://localhost:5500", 
-                          "https://*.herokuapp.com", "https://*.onrender.com", "https://*.render.com")
+                          "https://*.herokuapp.com", "https://*.onrender.com", "https://*.render.com",
+                          "https://sistema-facturacion.onrender.com")
               .AllowAnyHeader()
               .AllowAnyMethod()
               .SetIsOriginAllowedToAllowWildcardSubdomains();
@@ -43,11 +44,13 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// Enable Swagger in production for Render
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Facturacion API V1");
+    c.RoutePrefix = "swagger";
+});
 
 app.UseCors("AllowFrontend");
 
@@ -71,6 +74,9 @@ using (var scope = app.Services.CreateScope())
     context.Database.EnsureCreated();
 }
 
-// Configure port for deployment platforms
+// Configure port for Render deployment
 var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
-app.Run($"http://0.0.0.0:{port}");
+var urls = $"http://0.0.0.0:{port}";
+
+Console.WriteLine($"Starting server on {urls}");
+app.Run(urls);

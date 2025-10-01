@@ -1,4 +1,5 @@
 #!/bin/bash
-# Render start script
+# Render optimized start script
 cd Backend
-dotnet run --urls http://0.0.0.0:$PORT -c Release
+echo "Starting .NET application on port $PORT"
+dotnet run --urls http://0.0.0.0:$PORT --environment Production
