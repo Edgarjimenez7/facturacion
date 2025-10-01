@@ -1,0 +1,12 @@
+{
+    "name": "sistema-facturacion-tienda",
+    "version": "1.0.0",
+    "description": "Sistema completo de facturación para tiendas",
+    "scripts": {
+        "build": "cd Backend && dotnet build",
+        "start": "cd Backend && dotnet run --urls http://0.0.0.0:$PORT"
+    },
+    "keywords": ["dotnet", "billing", "invoicing", "ecommerce"],
+    "author": "Tu Nombre",
+    "license": "MIT"
+}

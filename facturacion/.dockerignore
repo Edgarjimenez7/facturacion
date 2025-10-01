@@ -1,0 +1,9 @@
+node_modules/
+bin/
+obj/
+*.db
+*.log
+.env
+.vs/
+.vscode/settings.json
+*.user

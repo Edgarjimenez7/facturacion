@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Facturación - Tienda</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-store"></i> Sistema de Facturación</h1>
+                <nav class="nav-menu">
+                    <a href="#dashboard" class="nav-item active" data-section="dashboard">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    <a href="#products" class="nav-item" data-section="products">
+                        <i class="fas fa-box"></i> Productos
+                    </a>
+                    <a href="#customers" class="nav-item" data-section="customers">
+                        <i class="fas fa-users"></i> Clientes
+                    </a>
+                    <a href="#invoices" class="nav-item" data-section="invoices">
+                        <i class="fas fa-file-invoice"></i> Facturas
+                    </a>
+                    <a href="#reports" class="nav-item" data-section="reports">
+                        <i class="fas fa-chart-bar"></i> Reportes
+                    </a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section active">
+                <div class="section-header">
+                    <h2>Dashboard</h2>
+                    <p>Resumen general del sistema</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-sales">$0</h3>
+                            <p>Ventas Totales</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-file-invoice"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-invoices">0</h3>
+                            <p>Facturas</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-products">0</h3>
+                            <p>Productos</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-customers">0</h3>
+                            <p>Clientes</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-charts">
+                    <div class="chart-container">
+                        <h3>Productos Más Vendidos</h3>
+                        <div id="top-products" class="chart-content">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <h3>Productos con Poco Stock</h3>
+                        <div id="low-stock" class="chart-content">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Products Section -->
+            <section id="products" class="content-section">
+                <div class="section-header">
+                    <h2>Gestión de Productos</h2>
+                    <button class="btn btn-primary" onclick="openProductModal()">
+                        <i class="fas fa-plus"></i> Nuevo Producto
+                    </button>
+                </div>
+
+                <div class="section-controls">
+                    <input type="text" id="product-search" placeholder="Buscar productos..." class="search-input">
+                    <select id="product-category" class="filter-select">
+                        <option value="">Todas las categorías</option>
+                    </select>
+                </div>
+
+                <div class="table-container">
+                    <table id="products-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Categoría</th>
+                                <th>Precio</th>
+                                <th>Stock</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dynamic content -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Customers Section -->
+            <section id="customers" class="content-section">
+                <div class="section-header">
+                    <h2>Gestión de Clientes</h2>
+                    <button class="btn btn-primary" onclick="openCustomerModal()">
+                        <i class="fas fa-plus"></i> Nuevo Cliente
+                    </button>
+                </div>
+
+                <div class="section-controls">
+                    <input type="text" id="customer-search" placeholder="Buscar clientes..." class="search-input">
+                </div>
+
+                <div class="table-container">
+                    <table id="customers-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Email</th>
+                                <th>Teléfono</th>
+                                <th>Documento</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dynamic content -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Invoices Section -->
+            <section id="invoices" class="content-section">
+                <div class="section-header">
+                    <h2>Gestión de Facturas</h2>
+                    <button class="btn btn-primary" onclick="openInvoiceModal()">
+                        <i class="fas fa-plus"></i> Nueva Factura
+                    </button>
+                </div>
+
+                <div class="section-controls">
+                    <input type="text" id="invoice-search" placeholder="Buscar facturas..." class="search-input">
+                    <select id="invoice-status" class="filter-select">
+                        <option value="">Todos los estados</option>
+                        <option value="Pending">Pendiente</option>
+                        <option value="Paid">Pagado</option>
+                        <option value="Cancelled">Cancelado</option>
+                    </select>
+                </div>
+
+                <div class="table-container">
+                    <table id="invoices-table">
+                        <thead>
+                            <tr>
+                                <th>Número</th>
+                                <th>Cliente</th>
+                                <th>Fecha</th>
+                                <th>Total</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dynamic content -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Reports Section -->
+            <section id="reports" class="content-section">
+                <div class="section-header">
+                    <h2>Reportes y Estadísticas</h2>
+                </div>
+
+                <div class="reports-filters">
+                    <label for="report-start-date">Fecha Inicio:</label>
+                    <input type="date" id="report-start-date" class="date-input">
+
+                    <label for="report-end-date">Fecha Fin:</label>
+                    <input type="date" id="report-end-date" class="date-input">
+
+                    <button class="btn btn-secondary" onclick="generateReports()">
+                        <i class="fas fa-chart-line"></i> Generar Reportes
+                    </button>
+                </div>
+
+                <div class="reports-grid">
+                    <div class="report-card">
+                        <h3>Clientes Principales</h3>
+                        <div id="top-customers" class="report-content">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+
+                    <div class="report-card">
+                        <h3>Ingresos Diarios</h3>
+                        <div id="daily-revenue" class="report-content">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="product-modal-title">Nuevo Producto</h3>
+                <span class="close" onclick="closeModal('product-modal')">&times;</span>
+            </div>
+            <form id="product-form">
+                <input type="hidden" id="product-id">
+                <div class="form-group">
+                    <label for="product-name">Nombre:</label>
+                    <input type="text" id="product-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="product-description">Descripción:</label>
+                    <textarea id="product-description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="product-price">Precio:</label>
+                    <input type="number" id="product-price" step="0.01" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="product-stock">Stock:</label>
+                    <input type="number" id="product-stock" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="product-category-input">Categoría:</label>
+                    <input type="text" id="product-category-input" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('product-modal')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="customer-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="customer-modal-title">Nuevo Cliente</h3>
+                <span class="close" onclick="closeModal('customer-modal')">&times;</span>
+            </div>
+            <form id="customer-form">
+                <input type="hidden" id="customer-id">
+                <div class="form-group">
+                    <label for="customer-name">Nombre:</label>
+                    <input type="text" id="customer-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="customer-email">Email:</label>
+                    <input type="email" id="customer-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="customer-phone">Teléfono:</label>
+                    <input type="text" id="customer-phone">
+                </div>
+                <div class="form-group">
+                    <label for="customer-address">Dirección:</label>
+                    <textarea id="customer-address"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="customer-document-type">Tipo Documento:</label>
+                    <select id="customer-document-type">
+                        <option value="DNI">DNI</option>
+                        <option value="Pasaporte">Pasaporte</option>
+                        <option value="Cedula">Cédula</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="customer-document-number">Número Documento:</label>
+                    <input type="text" id="customer-document-number">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('customer-modal')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="invoice-modal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3 id="invoice-modal-title">Nueva Factura</h3>
+                <span class="close" onclick="closeModal('invoice-modal')">&times;</span>
+            </div>
+            <form id="invoice-form">
+                <div class="invoice-header-form">
+                    <div class="form-group">
+                        <label for="invoice-customer">Cliente:</label>
+                        <select id="invoice-customer" required>
+                            <option value="">Seleccionar cliente...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="invoice-due-date">Fecha Vencimiento:</label>
+                        <input type="date" id="invoice-due-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="invoice-notes">Notas:</label>
+                        <textarea id="invoice-notes"></textarea>
+                    </div>
+                </div>
+
+                <div class="invoice-products">
+                    <h4>Productos</h4>
+                    <div class="add-product-row">
+                        <select id="product-select">
+                            <option value="">Seleccionar producto...</option>
+                        </select>
+                        <button type="button" class="btn btn-secondary" onclick="addProductToInvoice()">
+                            <i class="fas fa-plus"></i> Agregar
+                        </button>
+                    </div>
+
+                    <table id="invoice-products-table">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unit.</th>
+                                <th>Descuento (%)</th>
+                                <th>Total</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dynamic content -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="invoice-totals">
+                    <div class="totals-row">
+                        <span>Subtotal:</span>
+                        <span id="invoice-subtotal">$0.00</span>
+                    </div>
+                    <div class="totals-row">
+                        <span>Impuesto (18%):</span>
+                        <span id="invoice-tax">$0.00</span>
+                    </div>
+                    <div class="totals-row total">
+                        <span>Total:</span>
+                        <span id="invoice-total">$0.00</span>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('invoice-modal')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Crear Factura</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

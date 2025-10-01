@@ -1,0 +1,88 @@
+{
+  "Version": 1,
+  "Hash": "zgB3L4NC7/EjZgqaD/lR6bBJdMtuY3yNCEN4b0Dp2FU=",
+  "Source": "FacturacionAPI",
+  "BasePath": "_content/FacturacionAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "FacturacionAPI\\wwwroot",
+      "Source": "FacturacionAPI",
+      "ContentRoot": "C:\\Users\\ejimenez.CAMUSATDOM\\Documents\\GitHub\\facturacion-\\facturacion\\Backend\\wwwroot\\",
+      "BasePath": "_content/FacturacionAPI",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\ejimenez.CAMUSATDOM\\Documents\\GitHub\\facturacion-\\facturacion\\Backend\\wwwroot\\css\\styles.css",
+      "SourceId": "FacturacionAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ejimenez.CAMUSATDOM\\Documents\\GitHub\\facturacion-\\facturacion\\Backend\\wwwroot\\",
+      "BasePath": "_content/FacturacionAPI",
+      "RelativePath": "css/styles.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\styles.css"
+    },
+    {
+      "Identity": "C:\\Users\\ejimenez.CAMUSATDOM\\Documents\\GitHub\\facturacion-\\facturacion\\Backend\\wwwroot\\index.html",
+      "SourceId": "FacturacionAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ejimenez.CAMUSATDOM\\Documents\\GitHub\\facturacion-\\facturacion\\Backend\\wwwroot\\",
+      "BasePath": "_content/FacturacionAPI",
+      "RelativePath": "index.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\index.html"
+    },
+    {
+      "Identity": "C:\\Users\\ejimenez.CAMUSATDOM\\Documents\\GitHub\\facturacion-\\facturacion\\Backend\\wwwroot\\js\\api.js",
+      "SourceId": "FacturacionAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ejimenez.CAMUSATDOM\\Documents\\GitHub\\facturacion-\\facturacion\\Backend\\wwwroot\\",
+      "BasePath": "_content/FacturacionAPI",
+      "RelativePath": "js/api.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\api.js"
+    },
+    {
+      "Identity": "C:\\Users\\ejimenez.CAMUSATDOM\\Documents\\GitHub\\facturacion-\\facturacion\\Backend\\wwwroot\\js\\app.js",
+      "SourceId": "FacturacionAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ejimenez.CAMUSATDOM\\Documents\\GitHub\\facturacion-\\facturacion\\Backend\\wwwroot\\",
+      "BasePath": "_content/FacturacionAPI",
+      "RelativePath": "js/app.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\app.js"
+    }
+  ]
+}
