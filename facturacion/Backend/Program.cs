@@ -33,6 +33,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend", policy =>
     {
         policy.WithOrigins("http://localhost:3000", "http://127.0.0.1:5500", "http://localhost:5500", 
+                          "http://localhost:8080", "http://127.0.0.1:8080",
                           "https://*.herokuapp.com", "https://*.onrender.com", "https://*.render.com",
                           "https://sistema-facturacion.onrender.com")
               .AllowAnyHeader()
@@ -58,7 +59,11 @@ app.UseCors("AllowFrontend");
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-app.UseHttpsRedirection();
+// Only use HTTPS redirection in production
+if (app.Environment.IsProduction())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseAuthorization();
 

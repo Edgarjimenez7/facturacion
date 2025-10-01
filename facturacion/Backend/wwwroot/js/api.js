@@ -1,6 +1,6 @@
 // API Base URL - Auto-detect environment
 const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ?
-    'https://localhost:5001/api' :
+    'https://sistema-facturacion-v2.onrender.com/api' :
     `${window.location.protocol}//${window.location.host}/api`;
 
 // API Service class
