@@ -54,7 +54,8 @@ namespace FacturacionAPI.Controllers
                 var paidInvoices = _context.Invoices
                     .Where(i => i.Status == "Paid" && i.InvoiceDate >= start && i.InvoiceDate <= end);
 
-                var totalSales = await paidInvoices.SumAsync(i => i.Total);
+                var invoiceList = await paidInvoices.ToListAsync();
+                var totalSales = invoiceList.Sum(i => i.Total);
                 var totalInvoices = await paidInvoices.CountAsync();
                 var totalProducts = await _context.Products.Where(p => p.IsActive).CountAsync();
                 var totalCustomers = await _context.Customers.Where(c => c.IsActive).CountAsync();
@@ -63,28 +64,31 @@ namespace FacturacionAPI.Controllers
                 var topProducts = new List<ProductSalesDto>();
                 if (await _context.InvoiceDetails.AnyAsync())
                 {
-                    topProducts = await _context.InvoiceDetails
+                    var invoiceDetails = await _context.InvoiceDetails
                         .Include(d => d.Product)
                         .Include(d => d.Invoice)
                         .Where(d => d.Invoice != null && d.Product != null && d.Invoice.Status == "Paid" && d.Invoice.InvoiceDate >= start && d.Invoice.InvoiceDate <= end)
+                        .ToListAsync();
+                        
+                    topProducts = invoiceDetails
                         .GroupBy(d => new { d.ProductId, d.Product.Name })
                         .Select(g => new ProductSalesDto
                         {
                             ProductId = g.Key.ProductId,
                             ProductName = g.Key.Name ?? "Unknown",
                             QuantitySold = g.Sum(d => d.Quantity),
-                    TotalRevenue = g.Sum(d => d.Total)
+                            TotalRevenue = g.Sum(d => d.Total)
                         })
                         .OrderByDescending(p => p.TotalRevenue)
                         .Take(5)
-                        .ToListAsync();
+                        .ToList();
                 }
 
                 // Monthly sales - with null check
                 var monthlySales = new List<MonthlySalesDto>();
-                if (await paidInvoices.AnyAsync())
+                if (invoiceList.Any())
                 {
-                    monthlySales = await paidInvoices
+                    monthlySales = invoiceList
                         .GroupBy(i => new { i.InvoiceDate.Year, i.InvoiceDate.Month })
                         .Select(g => new MonthlySalesDto
                         {
@@ -96,7 +100,7 @@ namespace FacturacionAPI.Controllers
                         })
                         .OrderBy(m => m.Year)
                         .ThenBy(m => m.Month)
-                        .ToListAsync();
+                        .ToList();
                 }
 
                 var report = new SalesReportDto
@@ -160,9 +164,12 @@ namespace FacturacionAPI.Controllers
             var start = startDate ?? DateTime.Now.AddMonths(-12);
             var end = endDate ?? DateTime.Now;
 
-            var topCustomers = await _context.Invoices
+            var customerInvoices = await _context.Invoices
                 .Include(i => i.Customer)
                 .Where(i => i.Status == "Paid" && i.InvoiceDate >= start && i.InvoiceDate <= end)
+                .ToListAsync();
+                
+            var topCustomers = customerInvoices
                 .GroupBy(i => new { i.CustomerId, i.Customer.Name, i.Customer.Email })
                 .Select(g => new
                 {
@@ -175,7 +182,7 @@ namespace FacturacionAPI.Controllers
                 })
                 .OrderByDescending(c => c.TotalPurchases)
                 .Take(10)
-                .ToListAsync();
+                .ToList();
 
             return topCustomers;
         }
@@ -187,8 +194,11 @@ namespace FacturacionAPI.Controllers
             var start = startDate ?? DateTime.Now.AddDays(-30);
             var end = endDate ?? DateTime.Now;
 
-            var dailyRevenue = await _context.Invoices
+            var dailyInvoices = await _context.Invoices
                 .Where(i => i.Status == "Paid" && i.InvoiceDate >= start && i.InvoiceDate <= end)
+                .ToListAsync();
+                
+            var dailyRevenue = dailyInvoices
                 .GroupBy(i => i.InvoiceDate.Date)
                 .Select(g => new
                 {
@@ -198,7 +208,7 @@ namespace FacturacionAPI.Controllers
                     AverageOrderValue = g.Average(i => i.Total)
                 })
                 .OrderBy(d => d.Date)
-                .ToListAsync();
+                .ToList();
 
             return dailyRevenue;
         }
