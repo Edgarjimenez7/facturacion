@@ -38,17 +38,13 @@ namespace FacturacionAPI.Controllers
         {
             try
             {
+                // Simplified query to avoid issues
                 var invoices = await _context.Invoices
-                    .Include(i => i.Customer)
-                    .Include(i => i.InvoiceDetails)
-                        .ThenInclude(d => d.Product)
-                    .OrderByDescending(i => i.CreatedDate)
                     .Select(i => new
                     {
                         i.Id,
                         i.InvoiceNumber,
                         i.CustomerId,
-                        CustomerName = i.Customer.Name,
                         i.InvoiceDate,
                         i.DueDate,
                         i.SubTotal,
@@ -56,25 +52,16 @@ namespace FacturacionAPI.Controllers
                         i.Total,
                         i.Notes,
                         i.Status,
-                        i.CreatedDate,
-                        InvoiceDetails = i.InvoiceDetails.Select(d => new
-                        {
-                            d.Id,
-                            d.ProductId,
-                            ProductName = d.Product.Name,
-                            d.Quantity,
-                            d.UnitPrice,
-                            d.Discount,
-                            d.Total
-                        }).ToList()
+                        i.CreatedDate
                     })
+                    .OrderByDescending(i => i.CreatedDate)
                     .ToListAsync();
 
                 return Ok(invoices);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { error = ex.Message });
+                return StatusCode(500, new { error = ex.Message, stackTrace = ex.StackTrace });
             }
         }
 

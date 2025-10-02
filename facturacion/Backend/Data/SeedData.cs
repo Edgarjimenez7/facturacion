@@ -113,6 +113,100 @@ namespace FacturacionAPI.Data
 
             context.Customers.AddRange(customers);
             await context.SaveChangesAsync();
+
+            // Add sample invoices
+            var invoices = new[]
+            {
+                new Invoice
+                {
+                    InvoiceNumber = "INV-001",
+                    CustomerId = 1, // Juan Pérez
+                    InvoiceDate = DateTime.Now.AddDays(-10),
+                    DueDate = DateTime.Now.AddDays(20),
+                    SubTotal = 629.98m,
+                    Tax = 113.40m,
+                    Total = 743.38m,
+                    Notes = "Factura de prueba 1",
+                    Status = "Paid",
+                    CreatedDate = DateTime.Now.AddDays(-10)
+                },
+                new Invoice
+                {
+                    InvoiceNumber = "INV-002",
+                    CustomerId = 2, // María García
+                    InvoiceDate = DateTime.Now.AddDays(-5),
+                    DueDate = DateTime.Now.AddDays(25),
+                    SubTotal = 89.99m,
+                    Tax = 16.20m,
+                    Total = 106.19m,
+                    Notes = "Factura de prueba 2",
+                    Status = "Pending",
+                    CreatedDate = DateTime.Now.AddDays(-5)
+                },
+                new Invoice
+                {
+                    InvoiceNumber = "INV-003",
+                    CustomerId = 3, // Carlos López
+                    InvoiceDate = DateTime.Now.AddDays(-2),
+                    DueDate = DateTime.Now.AddDays(28),
+                    SubTotal = 199.99m,
+                    Tax = 36.00m,
+                    Total = 235.99m,
+                    Notes = "Factura de prueba 3",
+                    Status = "Pending",
+                    CreatedDate = DateTime.Now.AddDays(-2)
+                }
+            };
+
+            context.Invoices.AddRange(invoices);
+            await context.SaveChangesAsync();
+
+            // Add sample invoice details
+            var invoiceDetails = new[]
+            {
+                // Detalles para INV-001
+                new InvoiceDetail
+                {
+                    InvoiceId = 1,
+                    ProductId = 1, // Laptop HP
+                    Quantity = 1,
+                    UnitPrice = 599.99m,
+                    Discount = 0,
+                    Total = 599.99m
+                },
+                new InvoiceDetail
+                {
+                    InvoiceId = 1,
+                    ProductId = 2, // Mouse Logitech
+                    Quantity = 1,
+                    UnitPrice = 29.99m,
+                    Discount = 0,
+                    Total = 29.99m
+                },
+                // Detalles para INV-002
+                new InvoiceDetail
+                {
+                    InvoiceId = 2,
+                    ProductId = 3, // Teclado Mecánico
+                    Quantity = 1,
+                    UnitPrice = 89.99m,
+                    Discount = 0,
+                    Total = 89.99m
+                },
+                // Detalles para INV-003
+                new InvoiceDetail
+                {
+                    InvoiceId = 3,
+                    ProductId = 4, // Monitor Samsung
+                    Quantity = 1,
+                    UnitPrice = 199.99m,
+                    Discount = 0,
+                    Total = 199.99m
+                }
+            };
+
+            context.InvoiceDetails.AddRange(invoiceDetails);
+            await context.SaveChangesAsync();
         }
     }
 }
