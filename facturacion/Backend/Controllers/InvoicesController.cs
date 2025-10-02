@@ -34,62 +34,173 @@ namespace FacturacionAPI.Controllers
 
         // GET: api/Invoices
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Invoice>>> GetInvoices()
+        public async Task<ActionResult<IEnumerable<object>>> GetInvoices()
         {
-            return await _context.Invoices
-                .Include(i => i.Customer)
-                .Include(i => i.InvoiceDetails)
-                    .ThenInclude(d => d.Product)
-                .OrderByDescending(i => i.CreatedDate)
-                .ToListAsync();
+            try
+            {
+                var invoices = await _context.Invoices
+                    .Include(i => i.Customer)
+                    .Include(i => i.InvoiceDetails)
+                        .ThenInclude(d => d.Product)
+                    .OrderByDescending(i => i.CreatedDate)
+                    .Select(i => new
+                    {
+                        i.Id,
+                        i.InvoiceNumber,
+                        i.CustomerId,
+                        CustomerName = i.Customer.Name,
+                        i.InvoiceDate,
+                        i.DueDate,
+                        i.SubTotal,
+                        i.Tax,
+                        i.Total,
+                        i.Notes,
+                        i.Status,
+                        i.CreatedDate,
+                        InvoiceDetails = i.InvoiceDetails.Select(d => new
+                        {
+                            d.Id,
+                            d.ProductId,
+                            ProductName = d.Product.Name,
+                            d.Quantity,
+                            d.UnitPrice,
+                            d.Discount,
+                            d.Total
+                        }).ToList()
+                    })
+                    .ToListAsync();
+
+                return Ok(invoices);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
         }
 
         // GET: api/Invoices/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Invoice>> GetInvoice(int id)
+        public async Task<ActionResult<object>> GetInvoice(int id)
         {
-            var invoice = await _context.Invoices
-                .Include(i => i.Customer)
-                .Include(i => i.InvoiceDetails)
-                    .ThenInclude(d => d.Product)
-                .FirstOrDefaultAsync(i => i.Id == id);
-
-            if (invoice == null)
+            try
             {
-                return NotFound();
-            }
+                var invoice = await _context.Invoices
+                    .Include(i => i.Customer)
+                    .Include(i => i.InvoiceDetails)
+                        .ThenInclude(d => d.Product)
+                    .Where(i => i.Id == id)
+                    .Select(i => new
+                    {
+                        i.Id,
+                        i.InvoiceNumber,
+                        i.CustomerId,
+                        CustomerName = i.Customer.Name,
+                        CustomerEmail = i.Customer.Email,
+                        CustomerPhone = i.Customer.Phone,
+                        i.InvoiceDate,
+                        i.DueDate,
+                        i.SubTotal,
+                        i.Tax,
+                        i.Total,
+                        i.Notes,
+                        i.Status,
+                        i.CreatedDate,
+                        InvoiceDetails = i.InvoiceDetails.Select(d => new
+                        {
+                            d.Id,
+                            d.ProductId,
+                            ProductName = d.Product.Name,
+                            d.Quantity,
+                            d.UnitPrice,
+                            d.Discount,
+                            d.Total
+                        }).ToList()
+                    })
+                    .FirstOrDefaultAsync();
 
-            return invoice;
+                if (invoice == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(invoice);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
         }
 
         // GET: api/Invoices/customer/5
         [HttpGet("customer/{customerId}")]
-        public async Task<ActionResult<IEnumerable<Invoice>>> GetInvoicesByCustomer(int customerId)
+        public async Task<ActionResult<IEnumerable<object>>> GetInvoicesByCustomer(int customerId)
         {
-            var invoices = await _context.Invoices
-                .Include(i => i.Customer)
-                .Include(i => i.InvoiceDetails)
-                    .ThenInclude(d => d.Product)
-                .Where(i => i.CustomerId == customerId)
-                .OrderByDescending(i => i.CreatedDate)
-                .ToListAsync();
+            try
+            {
+                var invoices = await _context.Invoices
+                    .Include(i => i.Customer)
+                    .Include(i => i.InvoiceDetails)
+                        .ThenInclude(d => d.Product)
+                    .Where(i => i.CustomerId == customerId)
+                    .OrderByDescending(i => i.CreatedDate)
+                    .Select(i => new
+                    {
+                        i.Id,
+                        i.InvoiceNumber,
+                        i.CustomerId,
+                        CustomerName = i.Customer.Name,
+                        i.InvoiceDate,
+                        i.DueDate,
+                        i.SubTotal,
+                        i.Tax,
+                        i.Total,
+                        i.Notes,
+                        i.Status,
+                        i.CreatedDate
+                    })
+                    .ToListAsync();
 
-            return invoices;
+                return Ok(invoices);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
         }
 
         // GET: api/Invoices/search/{term}
         [HttpGet("search/{term}")]
-        public async Task<ActionResult<IEnumerable<Invoice>>> SearchInvoices(string term)
+        public async Task<ActionResult<IEnumerable<object>>> SearchInvoices(string term)
         {
-            var invoices = await _context.Invoices
-                .Include(i => i.Customer)
-                .Include(i => i.InvoiceDetails)
-                    .ThenInclude(d => d.Product)
-                .Where(i => i.InvoiceNumber.Contains(term) || i.Customer.Name.Contains(term))
-                .OrderByDescending(i => i.CreatedDate)
-                .ToListAsync();
+            try
+            {
+                var invoices = await _context.Invoices
+                    .Include(i => i.Customer)
+                    .Where(i => i.InvoiceNumber.Contains(term) || i.Customer.Name.Contains(term))
+                    .OrderByDescending(i => i.CreatedDate)
+                    .Select(i => new
+                    {
+                        i.Id,
+                        i.InvoiceNumber,
+                        i.CustomerId,
+                        CustomerName = i.Customer.Name,
+                        i.InvoiceDate,
+                        i.DueDate,
+                        i.SubTotal,
+                        i.Tax,
+                        i.Total,
+                        i.Notes,
+                        i.Status,
+                        i.CreatedDate
+                    })
+                    .ToListAsync();
 
-            return invoices;
+                return Ok(invoices);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
         }
 
         // POST: api/Invoices

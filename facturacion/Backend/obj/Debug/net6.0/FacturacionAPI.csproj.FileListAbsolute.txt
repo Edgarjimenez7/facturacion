@@ -1,4 +1,5 @@
 C:\Users\ejimenez.CAMUSATDOM\Documents\GitHub\facturacion-\facturacion\Backend\bin\Debug\net6.0\appsettings.json
+C:\Users\ejimenez.CAMUSATDOM\Documents\GitHub\facturacion-\facturacion\Backend\bin\Debug\net6.0\FacturacionAPI.staticwebassets.runtime.json
 C:\Users\ejimenez.CAMUSATDOM\Documents\GitHub\facturacion-\facturacion\Backend\bin\Debug\net6.0\FacturacionAPI.exe
 C:\Users\ejimenez.CAMUSATDOM\Documents\GitHub\facturacion-\facturacion\Backend\bin\Debug\net6.0\FacturacionAPI.deps.json
 C:\Users\ejimenez.CAMUSATDOM\Documents\GitHub\facturacion-\facturacion\Backend\bin\Debug\net6.0\FacturacionAPI.runtimeconfig.json
@@ -15,6 +16,8 @@ C:\Users\ejimenez.CAMUSATDOM\Documents\GitHub\facturacion-\facturacion\Backend\b
 C:\Users\ejimenez.CAMUSATDOM\Documents\GitHub\facturacion-\facturacion\Backend\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.dll
 C:\Users\ejimenez.CAMUSATDOM\Documents\GitHub\facturacion-\facturacion\Backend\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll
 C:\Users\ejimenez.CAMUSATDOM\Documents\GitHub\facturacion-\facturacion\Backend\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\Users\ejimenez.CAMUSATDOM\Documents\GitHub\facturacion-\facturacion\Backend\bin\Debug\net6.0\Npgsql.dll
+C:\Users\ejimenez.CAMUSATDOM\Documents\GitHub\facturacion-\facturacion\Backend\bin\Debug\net6.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
 C:\Users\ejimenez.CAMUSATDOM\Documents\GitHub\facturacion-\facturacion\Backend\bin\Debug\net6.0\SQLitePCLRaw.batteries_v2.dll
 C:\Users\ejimenez.CAMUSATDOM\Documents\GitHub\facturacion-\facturacion\Backend\bin\Debug\net6.0\SQLitePCLRaw.core.dll
 C:\Users\ejimenez.CAMUSATDOM\Documents\GitHub\facturacion-\facturacion\Backend\bin\Debug\net6.0\SQLitePCLRaw.provider.e_sqlite3.dll
@@ -60,5 +63,3 @@ C:\Users\ejimenez.CAMUSATDOM\Documents\GitHub\facturacion-\facturacion\Backend\o
 C:\Users\ejimenez.CAMUSATDOM\Documents\GitHub\facturacion-\facturacion\Backend\obj\Debug\net6.0\FacturacionAPI.pdb
 C:\Users\ejimenez.CAMUSATDOM\Documents\GitHub\facturacion-\facturacion\Backend\obj\Debug\net6.0\FacturacionAPI.genruntimeconfig.cache
 C:\Users\ejimenez.CAMUSATDOM\Documents\GitHub\facturacion-\facturacion\Backend\obj\Debug\net6.0\ref\FacturacionAPI.dll
-C:\Users\ejimenez.CAMUSATDOM\Documents\GitHub\facturacion-\facturacion\Backend\bin\Debug\net6.0\Npgsql.dll
-C:\Users\ejimenez.CAMUSATDOM\Documents\GitHub\facturacion-\facturacion\Backend\bin\Debug\net6.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll

@@ -32,13 +32,9 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:3000", "http://127.0.0.1:5500", "http://localhost:5500", 
-                          "http://localhost:8080", "http://127.0.0.1:8080",
-                          "https://*.herokuapp.com", "https://*.onrender.com", "https://*.render.com",
-                          "https://sistema-facturacion.onrender.com")
+        policy.AllowAnyOrigin()
               .AllowAnyHeader()
-              .AllowAnyMethod()
-              .SetIsOriginAllowedToAllowWildcardSubdomains();
+              .AllowAnyMethod();
     });
 });
 
@@ -72,11 +68,12 @@ app.MapControllers();
 // Serve frontend for SPA routing
 app.MapFallbackToFile("index.html");
 
-// Create database if it doesn't exist
+// Create database if it doesn't exist and seed data
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<FacturacionDbContext>();
     context.Database.EnsureCreated();
+    FacturacionAPI.Data.SeedData.Initialize(context).Wait();
 }
 
 // Configure port for Render deployment

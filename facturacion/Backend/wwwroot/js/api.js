@@ -1,7 +1,6 @@
-// API Base URL - Auto-detect environment
-const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ?
-    'https://sistema-facturacion-v2.onrender.com/api' :
-    `${window.location.protocol}//${window.location.host}/api`;
+// API Base URL - Usar siempre Render para evitar problemas de conectividad
+// API Base URL - Usar siempre Render para evitar problemas de conectividad
+const API_BASE_URL = 'https://sistema-facturacion-v2.onrender.com/api';
 
 // API Service class
 class ApiService {
@@ -12,10 +11,14 @@ class ApiService {
     async request(endpoint, options = {}) {
         const url = `${this.baseURL}${endpoint}`;
         const config = {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept': 'application/json',
                 ...options.headers,
             },
+            mode: 'cors',
+            credentials: 'omit',
             ...options,
         };
 
@@ -23,7 +26,12 @@ class ApiService {
             const response = await fetch(url, config);
 
             if (!response.ok) {
-                const errorText = await response.text();
+                let errorText;
+                try {
+                    errorText = await response.text();
+                } catch {
+                    errorText = `HTTP ${response.status} ${response.statusText}`;
+                }
                 throw new Error(`HTTP ${response.status}: ${errorText}`);
             }
 
@@ -34,6 +42,9 @@ class ApiService {
             }
             return null;
         } catch (error) {
+            if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                throw new Error('Error de conectividad: No se puede conectar al servidor');
+            }
             console.error(`API Error: ${error.message}`);
             throw error;
         }

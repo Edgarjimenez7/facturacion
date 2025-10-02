@@ -69,8 +69,37 @@ function showSection(sectionName) {
 // Dashboard
 async function loadDashboard() {
     try {
-        const salesReport = await api.getSalesReport();
-        const lowStock = await api.getLowStockProducts();
+        // Try to get sales report, if fails, get individual data
+        let salesReport, lowStock;
+
+        try {
+            salesReport = await api.getSalesReport();
+            lowStock = await api.getLowStockProducts();
+        } catch (reportError) {
+            // Fallback: get data individually
+            console.log('Sales report failed, using fallback method');
+
+            const [allProducts, allCustomers, allInvoices] = await Promise.all([
+                api.getProducts().catch(() => []),
+                api.getCustomers().catch(() => []),
+                api.getInvoices().catch(() => [])
+            ]);
+
+            // Calculate stats manually
+            const paidInvoices = allInvoices.filter(inv => inv.status === 'Paid');
+
+            salesReport = {
+                totalSales: paidInvoices.reduce((sum, inv) => sum + (inv.total || 0), 0),
+                totalInvoices: paidInvoices.length,
+                totalProducts: allProducts.length,
+                totalCustomers: allCustomers.length,
+                topProducts: [],
+                monthlySales: []
+            };
+
+            // Get low stock products (stock <= 5)
+            lowStock = allProducts.filter(p => p.stock <= 5);
+        }
 
         // Update stats
         document.getElementById('total-sales').textContent = formatCurrency(salesReport.totalSales);

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Conectividad - Sistema de Facturación</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+        }
+        
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: #f9f9f9;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(135deg, #5a6268 0%, #3d4043 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .result {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            min-height: 20px;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        pre {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🔧 Test de Conectividad - Sistema de Facturación</h1>
+
+        <div class="test-section">
+            <h2>1. Test de API Base</h2>
+            <button class="btn" onclick="testApiBase()">Probar Conexión Base</button>
+            <div id="result-base" class="result"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>2. Test de Productos</h2>
+            <button class="btn" onclick="testProducts()">Obtener Productos</button>
+            <div id="result-products" class="result"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>3. Test de Clientes</h2>
+            <button class="btn" onclick="testCustomers()">Obtener Clientes</button>
+            <div id="result-customers" class="result"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>4. Test de Facturas</h2>
+            <button class="btn" onclick="testInvoices()">Obtener Facturas</button>
+            <div id="result-invoices" class="result"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>5. Test Completo del Dashboard</h2>
+            <button class="btn" onclick="testDashboard()">Probar Dashboard Completo</button>
+            <div id="result-dashboard" class="result"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>6. Test de CORS</h2>
+            <button class="btn" onclick="testCors()">Verificar Headers CORS</button>
+            <div id="result-cors" class="result"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>7. Limpiar Cache del Navegador</h2>
+            <button class="btn" onclick="clearCache()">Limpiar Cache y Recargar</button>
+            <div id="result-cache" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'https://sistema-facturacion-v2.onrender.com/api';
+
+        function log(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            element.className = `result ${type}`;
+            element.innerHTML = message;
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+
+        async function testApiBase() {
+            try {
+                log('result-base', '🔄 Probando conexión base...', 'info');
+
+                const response = await fetch(API_BASE_URL, {
+                    method: 'GET',
+                    mode: 'cors',
+                    credentials: 'omit',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                log('result-base', `✅ Conexión exitosa! Status: ${response.status}`, 'success');
+            } catch (error) {
+                log('result-base', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testProducts() {
+            try {
+                log('result-products', '🔄 Obteniendo productos...', 'info');
+
+                const response = await fetch(`${API_BASE_URL}/products`, {
+                    method: 'GET',
+                    mode: 'cors',
+                    credentials: 'omit',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const products = await response.json();
+                log('result-products', `✅ ${products.length} productos obtenidos:<br><pre>${JSON.stringify(products, null, 2)}</pre>`, 'success');
+            } catch (error) {
+                log('result-products', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testCustomers() {
+            try {
+                log('result-customers', '🔄 Obteniendo clientes...', 'info');
+
+                const response = await fetch(`${API_BASE_URL}/customers`, {
+                    method: 'GET',
+                    mode: 'cors',
+                    credentials: 'omit',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const customers = await response.json();
+                log('result-customers', `✅ ${customers.length} clientes obtenidos:<br><pre>${JSON.stringify(customers, null, 2)}</pre>`, 'success');
+            } catch (error) {
+                log('result-customers', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testInvoices() {
+            try {
+                log('result-invoices', '🔄 Obteniendo facturas...', 'info');
+
+                const response = await fetch(`${API_BASE_URL}/invoices`, {
+                    method: 'GET',
+                    mode: 'cors',
+                    credentials: 'omit',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const invoices = await response.json();
+                log('result-invoices', `✅ ${invoices.length} facturas obtenidas:<br><pre>${JSON.stringify(invoices, null, 2)}</pre>`, 'success');
+            } catch (error) {
+                log('result-invoices', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testDashboard() {
+            try {
+                log('result-dashboard', '🔄 Probando dashboard completo...', 'info');
+
+                const tests = [{
+                    name: 'products',
+                    url: `${API_BASE_URL}/products`
+                }, {
+                    name: 'customers',
+                    url: `${API_BASE_URL}/customers`
+                }, {
+                    name: 'invoices',
+                    url: `${API_BASE_URL}/invoices`
+                }];
+
+                const results = [];
+
+                for (const test of tests) {
+                    try {
+                        const response = await fetch(test.url, {
+                            method: 'GET',
+                            mode: 'cors',
+                            credentials: 'omit',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+                        if (!response.ok) {
+                            throw new Error(`HTTP ${response.status}`);
+                        }
+
+                        const data = await response.json();
+                        results.push(`✅ ${test.name}: ${data.length} elementos`);
+                    } catch (error) {
+                        results.push(`❌ ${test.name}: ${error.message}`);
+                    }
+                }
+
+                log('result-dashboard', `Dashboard Test:<br>${results.join('<br>')}`, 'success');
+            } catch (error) {
+                log('result-dashboard', `❌ Error general: ${error.message}`, 'error');
+            }
+        }
+
+        async function testCors() {
+            try {
+                log('result-cors', '🔄 Verificando headers CORS...', 'info');
+
+                const response = await fetch(`${API_BASE_URL}/products`, {
+                    method: 'GET',
+                    mode: 'cors',
+                    credentials: 'omit'
+                });
+
+                const corsHeaders = {
+                    'Access-Control-Allow-Origin': response.headers.get('Access-Control-Allow-Origin'),
+                    'Access-Control-Allow-Methods': response.headers.get('Access-Control-Allow-Methods'),
+                    'Access-Control-Allow-Headers': response.headers.get('Access-Control-Allow-Headers')
+                };
+
+                log('result-cors', `✅ Headers CORS:<br><pre>${JSON.stringify(corsHeaders, null, 2)}</pre>`, 'success');
+            } catch (error) {
+                log('result-cors', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        function clearCache() {
+            log('result-cache', '🔄 Limpiando cache...', 'info');
+
+            // Limpiar localStorage
+            localStorage.clear();
+
+            // Limpiar sessionStorage
+            sessionStorage.clear();
+
+            // Forzar recarga sin cache
+            setTimeout(() => {
+                log('result-cache', '✅ Cache limpiado. Recargando página...', 'success');
+                location.reload(true);
+            }, 1000);
+        }
+
+        // Auto-test al cargar
+        window.onload = function() {
+            console.log('🚀 Test de conectividad iniciado');
+            setTimeout(testApiBase, 1000);
+        };
+    </script>
+</body>
+
+</html>

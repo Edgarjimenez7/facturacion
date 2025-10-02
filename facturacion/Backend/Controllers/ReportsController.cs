@@ -111,7 +111,7 @@ namespace FacturacionAPI.Controllers
 
                 return report;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Log error and return empty report
                 return new SalesReportDto
@@ -147,7 +147,7 @@ namespace FacturacionAPI.Controllers
 
                 return lowStockProducts;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new List<object>();
             }
