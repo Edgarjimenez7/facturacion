@@ -82,11 +82,14 @@ async function loadDashboard() {
             const [allProducts, allCustomers, allInvoices] = await Promise.all([
                 api.getProducts().catch(() => []),
                 api.getCustomers().catch(() => []),
-                api.getInvoices().catch(() => [])
+                api.getInvoices().catch((error) => {
+                    console.warn('Invoices not available for dashboard:', error.message);
+                    return [];
+                })
             ]);
 
             // Calculate stats manually
-            const paidInvoices = allInvoices.filter(inv => inv.status === 'Paid');
+            const paidInvoices = allInvoices.filter(inv => inv.status === 'Paid' || inv.status === 'paid');
 
             salesReport = {
                 totalSales: paidInvoices.reduce((sum, inv) => sum + (inv.total || 0), 0),
@@ -349,8 +352,31 @@ async function loadInvoices() {
         invoices = await api.getInvoices();
         renderInvoicesTable();
     } catch (error) {
-        showError(tbody, error.message);
-        showToast('Error cargando facturas: ' + error.message, 'error');
+        console.error('Error loading invoices:', error);
+
+        // Handle specific HTTP 500 error
+        if (error.message.includes('HTTP 500') || error.message.includes('Internal Server Error')) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" style="text-align: center; padding: 20px;">
+                        <div style="color: var(--warning-color);">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 1.5em; margin-bottom: 10px;"></i>
+                            <p>El módulo de facturas está temporalmente en mantenimiento.</p>
+                            <p style="font-size: 0.9em; color: var(--text-secondary);">
+                                Puede crear y gestionar productos y clientes normalmente.
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+            `;
+            showToast('Módulo de facturas en mantenimiento - Otros módulos funcionan normalmente', 'warning');
+        } else {
+            showError(tbody, error.message);
+            showToast('Error cargando facturas: ' + error.message, 'error');
+        }
+
+        // Set empty invoices array to prevent other errors
+        invoices = [];
     }
 }
 
