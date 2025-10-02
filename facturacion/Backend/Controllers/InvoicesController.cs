@@ -38,31 +38,56 @@ namespace FacturacionAPI.Controllers
         {
             try
             {
-                // Simplified query to avoid issues
+                // Check if any invoices exist
+                var count = await _context.Invoices.CountAsync();
+                
+                if (count == 0)
+                {
+                    return Ok(new List<object>());
+                }
+
+                // Try the simplest possible query first
                 var invoices = await _context.Invoices
-                    .Select(i => new
-                    {
-                        i.Id,
-                        i.InvoiceNumber,
-                        i.CustomerId,
-                        i.InvoiceDate,
-                        i.DueDate,
-                        i.SubTotal,
-                        i.Tax,
-                        i.Total,
-                        i.Notes,
-                        i.Status,
-                        i.CreatedDate
-                    })
-                    .OrderByDescending(i => i.CreatedDate)
+                    .AsNoTracking()
+                    .Take(10)
                     .ToListAsync();
 
-                return Ok(invoices);
+                // Convert to simple objects
+                var result = invoices.Select(i => new
+                {
+                    i.Id,
+                    i.InvoiceNumber,
+                    i.CustomerId,
+                    InvoiceDate = i.InvoiceDate.ToString("yyyy-MM-dd"),
+                    DueDate = i.DueDate.ToString("yyyy-MM-dd"),
+                    i.SubTotal,
+                    i.Tax,
+                    i.Total,
+                    i.Status,
+                    CreatedDate = i.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss")
+                }).ToList();
+
+                return Ok(result);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { error = ex.Message, stackTrace = ex.StackTrace });
+                return StatusCode(500, new { 
+                    error = ex.Message, 
+                    innerException = ex.InnerException?.Message,
+                    source = ex.Source
+                });
             }
+        }
+
+        // GET: api/Invoices/test
+        [HttpGet("test")]
+        public ActionResult<object> TestInvoices()
+        {
+            return Ok(new { 
+                message = "Invoices controller is working", 
+                timestamp = DateTime.Now,
+                invoiceCount = _context.Invoices.Count()
+            });
         }
 
         // GET: api/Invoices/5
